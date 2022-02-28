@@ -4,6 +4,26 @@ const taskList = [];
 const taskAddBtn = document.getElementById('taskAddBtn');
 const todoList = document.getElementById('todoList');
 
+const showTask = () => {
+  todoList.innerHTML = '';
+
+  taskList.forEach((value, index) => {
+    const newTr = document.createElement('tr');
+    const idTd = document.createElement('td');
+    const taskTd = document.createElement('td');
+
+    idTd.textContent = index;
+    taskTd.textContent = value.task;
+
+    newTr.appendChild(idTd);
+    newTr.appendChild(taskTd);
+    newTr.appendChild(createStatusBtn(value));
+    newTr.appendChild(createDeleteBtn(index));
+
+    todoList.appendChild(newTr);
+  });
+};
+
 const createStatusBtn = value => {
   const statusTd = document.createElement('td');
   const statusBtn = document.createElement('button');
@@ -12,35 +32,24 @@ const createStatusBtn = value => {
   return statusTd;
 };
 
-const createDeleteBtn = () => {
+const createDeleteBtn = index => {
   const deleteTd = document.createElement('td');
   const deleteBtn = document.createElement('button');
   deleteBtn.textContent = '削除';
+  deleteBtn.addEventListener('click', function () {
+    taskList.splice(index, 1);
+    showTask();
+  });
   deleteTd.appendChild(deleteBtn);
   return deleteTd;
 };
 
 taskAddBtn.addEventListener('click', function () {
   if (inputTask.value) {
-    todoList.innerHTML = '';
     const inputTask = document.getElementById('inputTask');
+
     taskList.push({ task: inputTask.value, status: '作業中' });
-
-    taskList.forEach((value, i) => {
-      const newTr = document.createElement('tr');
-      const idTd = document.createElement('td');
-      const taskTd = document.createElement('td');
-
-      idTd.textContent = i;
-      taskTd.textContent = value.task;
-
-      newTr.appendChild(idTd);
-      newTr.appendChild(taskTd);
-      newTr.appendChild(createStatusBtn(value));
-      newTr.appendChild(createDeleteBtn());
-
-      todoList.appendChild(newTr);
-    });
-    inputTask.value = '';
+    showTask();
   }
+  inputTask.value = '';
 });
