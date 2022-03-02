@@ -24,7 +24,7 @@ const showTask = () => {
   });
 };
 
-const createStatusBtn = (value, index) => {
+const createStatusBtn = value => {
   const statusTd = document.createElement('td');
   const statusBtn = document.createElement('button');
   statusBtn.textContent = value.status;
