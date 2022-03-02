@@ -17,17 +17,23 @@ const showTask = () => {
 
     newTr.appendChild(idTd);
     newTr.appendChild(taskTd);
-    newTr.appendChild(createStatusBtn(value));
+    newTr.appendChild(createStatusBtn(value, index));
     newTr.appendChild(createDeleteBtn(index));
 
     todoList.appendChild(newTr);
   });
 };
 
-const createStatusBtn = value => {
+const createStatusBtn = (value, index) => {
   const statusTd = document.createElement('td');
   const statusBtn = document.createElement('button');
   statusBtn.textContent = value.status;
+  statusBtn.addEventListener('click', function () {
+    value.status === '作業中'
+      ? (value.status = '完了')
+      : (value.status = '作業中');
+    showTask();
+  });
   statusTd.appendChild(statusBtn);
   return statusTd;
 };
