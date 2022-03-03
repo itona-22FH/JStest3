@@ -29,9 +29,8 @@ const createStatusBtn = value => {
   const statusBtn = document.createElement('button');
   statusBtn.textContent = value.status;
   statusBtn.addEventListener('click', function () {
-    value.status === '作業中'
-      ? (value.status = '完了')
-      : (value.status = '作業中');
+    const status = value.status === '作業中' ? '完了' : '作業中';
+    value.status = status;
     showTask();
   });
   statusTd.appendChild(statusBtn);
