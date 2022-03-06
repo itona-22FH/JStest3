@@ -1,35 +1,36 @@
 'use strict';
-////////////////////////////////////////////////
-/////////////////////VARIABLES//////////////////
-////////////////////////////////////////////////
+
 const allTaskList = [];
-let workingTaskList;
-let completedTaskList;
 
 const taskAddBtn = document.getElementById('taskAddBtn');
 const todoList = document.getElementById('todoList');
-const radios = [];
-radios.push(
-  document.getElementById('radioAll'),
-  document.getElementById('radioStatus'),
-  document.getElementById('radioCompleted')
-);
+const radios = document.getElementsByName('choice');
 
 const showTask = () => {
   todoList.innerHTML = '';
   allTaskList.forEach((value, index) => {
     value.id = index;
   });
-  let taskList;
+
+  const taskList = [];
   if (radioAll.checked) {
-    taskList = allTaskList;
+    allTaskList.forEach(task => {
+      taskList.push(task);
+    });
   } else if (radioStatus.checked) {
-    workingTaskList = allTaskList.filter(value => value.status === '作業中');
-    taskList = workingTaskList;
+    allTaskList.forEach(task => {
+      if (task.status === '作業中') {
+        taskList.push(task);
+      }
+    });
   } else if (radioCompleted.checked) {
-    completedTaskList = allTaskList.filter(value => value.status === '完了');
-    taskList = completedTaskList;
+    allTaskList.forEach(task => {
+      if (task.status === '完了') {
+        taskList.push(task);
+      }
+    });
   }
+
   taskList.forEach((value, index) => {
     const newTr = document.createElement('tr');
     const idTd = document.createElement('td');
@@ -46,10 +47,6 @@ const showTask = () => {
     todoList.appendChild(newTr);
   });
 };
-
-////////////////////////////////////////////////
-////////////////CREATE BUTTON///////////////////
-////////////////////////////////////////////////
 
 const createStatusBtn = value => {
   const statusTd = document.createElement('td');
@@ -76,15 +73,8 @@ const createDeleteBtn = (value, index) => {
       allTaskList.splice(index, 1);
       showTask();
     });
-  } else if (radioStatus.checked) {
+  } else {
     deleteBtn.addEventListener('click', function () {
-      workingTaskList.splice(index, 1);
-      allTaskList.splice(value.id, 1);
-      showTask();
-    });
-  } else if (radioCompleted.checked) {
-    deleteBtn.addEventListener('click', function () {
-      completedTaskList.splice(index, 1);
       allTaskList.splice(value.id, 1);
       showTask();
     });
@@ -92,10 +82,6 @@ const createDeleteBtn = (value, index) => {
   deleteTd.appendChild(deleteBtn);
   return deleteTd;
 };
-
-////////////////////////////////////////////////
-////////////////ADDEVENTLISTENER////////////////
-////////////////////////////////////////////////
 
 taskAddBtn.addEventListener('click', function () {
   if (inputTask.value) {
